@@ -8,6 +8,7 @@ import com.example.wetherapp.di.networkModule
 import com.example.wetherapp.di.repositoryModule
 import com.example.wetherapp.di.viewModelModule
 import com.example.wetherapp.util.Constants
+import com.yandex.mapkit.MapKitFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -18,6 +19,9 @@ class WeatherApp : Application() {
     override fun onCreate() {
         super.onCreate()
         clearDatabaseFiles()
+
+        MapKitFactory.setApiKey(Constants.YANDEX_MAPS_API_KEY)
+        MapKitFactory.initialize(this)
 
         startKoin {
             androidLogger(Level.ERROR)

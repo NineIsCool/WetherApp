@@ -6,12 +6,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.wetherapp.presentation.forecast.ForecastScreen
 import com.example.wetherapp.presentation.weather.WeatherScreen
+import com.example.wetherapp.presentation.weather.WeatherViewModel
+import com.example.wetherapp.ui.screens.MapScreen
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun NavGraph(
     navController: NavHostController,
     onRequestLocationPermission: () -> Unit
 ) {
+    val weatherViewModel: WeatherViewModel = koinViewModel()
+
     NavHost(
         navController = navController,
         startDestination = Screen.Weather.route
@@ -20,6 +25,9 @@ fun NavGraph(
             WeatherScreen(
                 onNavigateToForecast = {
                     navController.navigate(Screen.Forecast.route)
+                },
+                onNavigateToMap = {
+                    navController.navigate(Screen.Map.route)
                 },
                 onRequestLocationPermission = onRequestLocationPermission
             )
@@ -32,10 +40,20 @@ fun NavGraph(
                 }
             )
         }
+
+        composable(route = Screen.Map.route) {
+            MapScreen(
+                onLocationSelected = { point ->
+                    weatherViewModel.fetchWeatherByMapPoint(point)
+                    navController.popBackStack()
+                }
+            )
+        }
     }
 }
 
 sealed class Screen(val route: String) {
     object Weather : Screen("weather_screen")
     object Forecast : Screen("forecast_screen")
+    object Map : Screen("map_screen")
 } 

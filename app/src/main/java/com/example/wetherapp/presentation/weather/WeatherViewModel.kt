@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wetherapp.domain.model.Weather
 import com.example.wetherapp.domain.repository.WeatherRepository
+import com.yandex.mapkit.geometry.Point
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -66,6 +67,10 @@ class WeatherViewModel(
                 _uiState.update { it.copy(isLoading = false, error = e.message) }
             }
         }
+    }
+
+    fun fetchWeatherByMapPoint(point: Point) {
+        fetchWeatherByCoordinates(point.latitude, point.longitude)
     }
 
     fun retry() {

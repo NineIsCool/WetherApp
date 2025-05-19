@@ -14,4 +14,6 @@ object Constants {
     const val DEFAULT_LAT = 51.5074 // London
     const val DEFAULT_LON = -0.1278 // London
     const val DEFAULT_CITY = "London"
+
+    const val YANDEX_MAPS_API_KEY = "a828fd1b-f470-497f-a881-5f4df3a13a71"
 } 

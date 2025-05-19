@@ -16,6 +16,13 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://maven.google.com") }
+        maven { 
+            url = uri("https://maven.yandex.net/repository/maps")
+            content {
+                includeGroup("com.yandex.android")
+            }
+        }
     }
 }
 

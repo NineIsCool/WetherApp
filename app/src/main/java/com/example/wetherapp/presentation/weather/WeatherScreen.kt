@@ -3,11 +3,13 @@ package com.example.wetherapp.presentation.weather
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -37,6 +39,7 @@ import org.koin.androidx.compose.koinViewModel
 fun WeatherScreen(
     viewModel: WeatherViewModel = koinViewModel(),
     onNavigateToForecast: () -> Unit,
+    onNavigateToMap: () -> Unit,
     onRequestLocationPermission: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -131,11 +134,27 @@ fun WeatherScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Button(
-                        onClick = onNavigateToForecast,
-                        modifier = Modifier.padding(horizontal = 16.dp)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        Text(text = "View 5-Day Forecast")
+                        Button(
+                            onClick = onNavigateToForecast,
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(text = "View 5-Day Forecast")
+                        }
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Button(
+                            onClick = onNavigateToMap,
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(text = "Choose on Map")
+                        }
                     }
                 }
 

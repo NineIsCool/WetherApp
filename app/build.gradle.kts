@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.wetherapp"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -28,6 +28,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+        debug {
+            isDebuggable = true
+            applicationIdSuffix = ".debug"
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -38,6 +42,12 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
 }
 
@@ -79,4 +89,9 @@ dependencies {
     
     // Google Play Services Location
     implementation("com.google.android.gms:play-services-location:21.2.0")
+    
+    // Yandex Maps
+    implementation("com.yandex.android:maps.mobile:4.15.0-lite")
+
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 }
