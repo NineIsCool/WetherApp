@@ -9,6 +9,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.example.wetherapp.MainActivity
 import com.example.wetherapp.R
+import com.example.wetherapp.domain.model.Weather
 
 object WeatherNotificationHelper {
     private const val CHANNEL_ID = "weather_updates_channel"
@@ -22,16 +23,27 @@ object WeatherNotificationHelper {
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
                 description = "Shows weather updates"
+                enableVibration(true)
+                enableLights(true)
             }
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
 
-    fun showNotification(context: Context, content: String) {
+    fun showNotification(context: Context, weather: Weather) {
+        val contentText = buildString {
+            append("${weather.temperature}°C")
+            append(", ${weather.weatherDescription}")
+            append("\nFeels like: ${weather.feelsLike}°C")
+            append("\nHumidity: ${weather.humidity}%")
+            append("\nWind: ${weather.windSpeed} m/s ${weather.getWindDirection()}")
+        }
+
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setContentTitle("Weather Update")
-            .setContentText(content)
+            .setContentTitle("${weather.cityName}, ${weather.countryCode}")
+            .setContentText(contentText)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(
                 PendingIntent.getActivity(
@@ -42,6 +54,7 @@ object WeatherNotificationHelper {
                 )
             )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
             .build()
 
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.wetherapp.domain.repository.WeatherRepository
+import com.example.wetherapp.util.Constants
 import org.koin.java.KoinJavaComponent.inject
 
 class WeatherWorker(
@@ -16,14 +17,21 @@ class WeatherWorker(
     override suspend fun doWork(): Result {
         return try {
             val (lat, lon, cityName) = weatherRepository.getLastLocation()
-            val result = weatherRepository.getCurrentWeather(lat, lon)
-            result.onSuccess { weather ->
-                WeatherNotificationHelper.showNotification(
-                    applicationContext,
-                    "${weather.cityName}: ${weather.temperature}°C, ${weather.weatherDescription}"
-                )
+
+            if (lat == Constants.DEFAULT_LAT && lon == Constants.DEFAULT_LON) {
+                return Result.failure()
             }
-            Result.success()
+            
+            val result = weatherRepository.getCurrentWeather(lat, lon)
+            when {
+                result.isSuccess -> {
+                    result.getOrNull()?.let { weather ->
+                        WeatherNotificationHelper.showNotification(applicationContext, weather)
+                    }
+                    Result.success()
+                }
+                else -> Result.failure()
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             Result.failure()

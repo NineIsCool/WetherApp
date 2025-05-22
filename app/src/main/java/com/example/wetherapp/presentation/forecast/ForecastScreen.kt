@@ -57,6 +57,12 @@ fun ForecastScreen(
         }
     }
     
+    LaunchedEffect(weatherState.weather?.cityName) {
+        weatherState.weather?.let {
+            viewModel.fetchForecastByCity(it.cityName)
+        }
+    }
+    
     Scaffold(
         topBar = {
             TopAppBar(
@@ -86,7 +92,7 @@ fun ForecastScreen(
         ForecastContent(
             uiState = uiState,
             weather = weather,
-            onRetry = { viewModel.retry() },
+            onRetry = { weather?.let { viewModel.fetchForecastByCity(it.cityName) } },
             contentPadding = innerPadding
         )
     }
