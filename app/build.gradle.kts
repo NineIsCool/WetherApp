@@ -86,11 +86,9 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
-    
-    // Google Play Services Location
+
     implementation("com.google.android.gms:play-services-location:21.2.0")
-    
-    // Yandex Maps
+
     implementation("com.yandex.android:maps.mobile:4.15.0-lite")
 
     implementation("androidx.work:work-runtime-ktx:2.9.0")

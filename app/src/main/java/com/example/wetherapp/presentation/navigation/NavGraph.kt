@@ -4,25 +4,25 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.wetherapp.presentation.forecast.ForecastScreen
-import com.example.wetherapp.presentation.weather.WeatherScreen
-import com.example.wetherapp.presentation.weather.WeatherViewModel
-import com.example.wetherapp.ui.screens.MapScreen
+import com.example.wetherapp.presentation.screens.ForecastScreen
+import com.example.wetherapp.presentation.screens.WeatherScreen
+import com.example.wetherapp.presentation.viewModel.WeatherViewModel
+import com.example.wetherapp.presentation.screens.MapScreen
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    onRequestLocationPermission: () -> Unit
+    onRequestLocationPermission: () -> Unit,
+    weatherViewModel: WeatherViewModel = koinViewModel()
 ) {
-    val weatherViewModel: WeatherViewModel = koinViewModel()
-
     NavHost(
         navController = navController,
         startDestination = Screen.Weather.route
     ) {
         composable(route = Screen.Weather.route) {
             WeatherScreen(
+                viewModel = weatherViewModel,
                 onNavigateToForecast = {
                     navController.navigate(Screen.Forecast.route)
                 },
@@ -35,6 +35,7 @@ fun NavGraph(
         
         composable(route = Screen.Forecast.route) {
             ForecastScreen(
+                weatherViewModel = weatherViewModel,
                 onNavigateBack = {
                     navController.popBackStack()
                 }

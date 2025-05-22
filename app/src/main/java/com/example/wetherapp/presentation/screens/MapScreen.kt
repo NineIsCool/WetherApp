@@ -1,4 +1,4 @@
-package com.example.wetherapp.ui.screens
+package com.example.wetherapp.presentation.screens
 
 import android.content.Context
 import androidx.compose.foundation.layout.Box

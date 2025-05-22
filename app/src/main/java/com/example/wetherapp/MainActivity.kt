@@ -20,9 +20,9 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.wetherapp.presentation.navigation.NavGraph
-import com.example.wetherapp.presentation.weather.WeatherViewModel
-import com.example.wetherapp.service.WeatherNotificationHelper
-import com.example.wetherapp.service.WeatherWorker
+import com.example.wetherapp.presentation.viewModel.WeatherViewModel
+import com.example.wetherapp.notification.WeatherNotificationHelper
+import com.example.wetherapp.notification.WeatherWorker
 import com.example.wetherapp.ui.theme.WetherAppTheme
 import com.example.wetherapp.util.LocationProvider
 import kotlinx.coroutines.CoroutineScope
@@ -62,6 +62,8 @@ class MainActivity : ComponentActivity() {
         WeatherNotificationHelper.createNotificationChannel(this)
         checkAndRequestNotificationPermission()
 
+        weatherViewModel.loadInitialData()
+
         setContent {
             WetherAppTheme {
                 Surface(
@@ -72,7 +74,8 @@ class MainActivity : ComponentActivity() {
 
                     NavGraph(
                         navController = navController,
-                        onRequestLocationPermission = { checkAndRequestLocationPermission() }
+                        onRequestLocationPermission = { checkAndRequestLocationPermission() },
+                        weatherViewModel = weatherViewModel
                     )
                 }
             }
@@ -103,7 +106,7 @@ class MainActivity : ComponentActivity() {
             .build()
 
         val weatherWorkRequest = PeriodicWorkRequestBuilder<WeatherWorker>(
-            10, TimeUnit.MINUTES
+            1, TimeUnit.MINUTES
         ).setConstraints(constraints)
             .build()
 

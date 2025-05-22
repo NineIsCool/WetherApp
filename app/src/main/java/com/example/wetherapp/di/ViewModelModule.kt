@@ -1,8 +1,8 @@
 package com.example.wetherapp.di
 
-import com.example.wetherapp.presentation.forecast.ForecastViewModel
-import com.example.wetherapp.presentation.search.SearchViewModel
-import com.example.wetherapp.presentation.weather.WeatherViewModel
+import com.example.wetherapp.presentation.viewModel.ForecastViewModel
+import com.example.wetherapp.presentation.viewModel.SearchViewModel
+import com.example.wetherapp.presentation.viewModel.WeatherViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
